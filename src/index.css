@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Press Start 2P", "Courier New", monospace;
+  --font-body: "VT323", "Courier New", monospace;
+  --color-ink: #0b0c0f;
+  --color-coal: #14151a;
+  --color-shell: #1c1e26;
+  --color-paper: #e8e8ea;
+  --color-fog: #9ba0ad;
+  --color-raccoon: #ff9e58;
+  --color-scarf: #2fa8a0;
+  --color-maskv: #8a5fd0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: hidden;
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: none;
+}
+
+canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* ---------- ambient room behind the handheld ---------- */
+.room-bg {
+  background:
+    radial-gradient(1100px 700px at 50% 38%, rgba(120, 126, 150, 0.13), transparent 62%),
+    radial-gradient(700px 500px at 82% 90%, rgba(255, 158, 88, 0.05), transparent 60%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 26px),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.022) 0 1px, transparent 1px 26px),
+    #0b0c0f;
+}
+
+/* ---------- CRT treatment over the screen ---------- */
+.crt::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+  background:
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.16) 0 1px, transparent 1px 3px),
+    radial-gradient(120% 95% at 50% 45%, transparent 55%, rgba(0, 0, 0, 0.42) 100%);
+}
+.crt::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 41;
+  background: linear-gradient(115deg, rgba(255, 255, 255, 0.05) 0%, transparent 22%);
+}
+
+/* ---------- chunky pixel panel ---------- */
+.pixel-panel {
+  background: #101117;
+  border: 3px solid #e8e8ea;
+  box-shadow:
+    0 0 0 3px #0b0c0f,
+    6px 6px 0 rgba(0, 0, 0, 0.55),
+    inset 0 0 0 2px #0b0c0f,
+    inset 0 0 0 4px #2a2d38;
+}
+.pixel-panel--paper {
+  background: #e8e8ea;
+  color: #101117;
+  border-color: #101117;
+  box-shadow:
+    0 0 0 3px #e8e8ea,
+    6px 6px 0 rgba(0, 0, 0, 0.55),
+    inset 0 0 0 2px #b9bac0;
+}
+
+/* ---------- key caps ---------- */
+.kbd {
+  font-family: var(--font-display);
+  font-size: 9px;
+  line-height: 1;
+  color: #e8e8ea;
+  background: #1c1e26;
+  border: 2px solid #3a3e4d;
+  border-bottom-width: 4px;
+  padding: 5px 6px 4px;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* ---------- animations ---------- */
+@keyframes blinkHard {
+  0%, 54% { opacity: 1; }
+  55%, 100% { opacity: 0; }
+}
+.blink { animation: blinkHard 1.05s steps(1) infinite; }
+
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+.floaty { animation: floaty 1.6s steps(4) infinite; }
+.floaty-slow { animation: floaty 2.4s steps(6) infinite; }
+
+@keyframes hoppy {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  10% { transform: translateY(2px) scaleY(0.92) scaleX(1.06); }
+  45% { transform: translateY(-12px) scaleY(1.05); }
+  80% { transform: translateY(1px) scaleY(0.96) scaleX(1.04); }
+}
+.hoppy { animation: hoppy 0.9s steps(8) infinite; }
+
+@keyframes confettiFall {
+  0% { transform: translateY(-8vh) rotate(0deg); opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(105vh) rotate(540deg); opacity: 0; }
+}
+.confetti-bit {
+  position: absolute;
+  top: -10px;
+  width: 7px;
+  height: 7px;
+  animation: confettiFall linear infinite;
+}
+
+@keyframes introBar {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+.intro-bar { animation: introBar 2.4s linear forwards; }
+
+@keyframes slideUp {
+  from { transform: translateY(14px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.slide-up { animation: slideUp 0.28s steps(5) both; }
+
+@keyframes titleDrop {
+  0% { transform: translateY(-26px); opacity: 0; }
+  70% { transform: translateY(3px); opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+.title-drop { animation: titleDrop 0.42s steps(7) both; }
+
+/* ---------- touch controls ---------- */
+.tbtn {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  border: 3px solid rgba(232, 232, 234, 0.55);
+  background: rgba(16, 17, 23, 0.6);
+  color: rgba(232, 232, 234, 0.85);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.5);
+}
+.tbtn:active,
+.tbtn.held {
+  background: rgba(232, 232, 234, 0.85);
+  color: #101117;
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.5);
+}
