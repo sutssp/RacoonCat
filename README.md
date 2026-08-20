@@ -1,4 +1,4 @@
-# 🦝 Onigiri Dash
+# Onigiri Dash
 
 A Game Boy-style pixel platformer. The world is black and white — the only
 colourful being is you, a little raccoon. Run, jump enemies, collect rice
